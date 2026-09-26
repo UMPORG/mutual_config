@@ -79,6 +79,13 @@ if (majorTiposNode !== nvmrc.split(".")[0]) {
   erros.push(`@types/node (${majorTiposNode}) não acompanha o major do Node (${nvmrc})`);
 }
 
+// .oxfmtrc.json deste repositório tem de ser igual ao preset base (o oxfmt não tem extends).
+const oxfmtLocal = ficheiros.get(join(raiz, ".oxfmtrc.json"));
+const oxfmtBase = ficheiros.get(join(raiz, "oxfmt", "base.json"));
+if (JSON.stringify(oxfmtLocal) !== JSON.stringify(oxfmtBase)) {
+  erros.push(".oxfmtrc.json difere de oxfmt/base.json");
+}
+
 if (erros.length > 0) {
   for (const erro of erros) process.stderr.write(`✗ ${erro}\n`);
   process.exit(1);

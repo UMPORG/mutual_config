@@ -38,8 +38,8 @@ jobs:
       - name: oxlint (preset next)
         run: npx oxlint -c oxlint/next.json scripts testes
 
-      - name: oxfmt (preset base)
-        run: npx oxfmt --check -c oxfmt/base.json .
+      - name: oxfmt (.oxfmtrc.json = cópia de oxfmt/base.json)
+        run: npx oxfmt --check .
 
       - name: Renovate (preset)
         run: npx --yes --package renovate@44 -- renovate-config-validator --strict renovate/default.json default.json
