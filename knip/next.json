@@ -1,0 +1,38 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "proxy.ts",
+    "instrumentation.ts",
+    "instrumentation-client.ts",
+    "mdx-components.tsx",
+    "source.config.ts",
+    "scripts/**/*.{ts,mts,js,mjs}",
+    "lib/**/*.worker.ts",
+    "db/migrate.ts",
+    "db/seed.ts"
+  ],
+  "project": ["**/*.{ts,tsx,mts,js,mjs,css}"],
+  "next": {
+    "entry": [
+      "next.config.{js,mjs,ts}",
+      "app/**/{page,layout,loading,error,global-error,not-found,forbidden,unauthorized,template,default,route}.{ts,tsx}",
+      "app/**/{opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}"
+    ]
+  },
+  "vitest": {
+    "config": ["vitest.config.{ts,mts}", "vitest.*.config.{ts,mts}"],
+    "entry": [
+      "**/*.test.{ts,tsx}",
+      "**/__tests__/**/*.{ts,tsx}",
+      "tests/setup*.{ts,tsx}",
+      "vitest.setup.{ts,tsx}"
+    ]
+  },
+  "playwright": {
+    "config": ["playwright.config.ts"],
+    "entry": ["e2e/**/*.{spec,setup}.ts", "tests/e2e/**/*.{spec,setup}.ts"]
+  },
+  "ignore": ["next-env.d.ts", ".source/**", "public/**"],
+  "ignoreDependencies": ["@umporg/config", "postcss-load-config"],
+  "ignoreExportsUsedInFile": true
+}

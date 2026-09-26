@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "env": {
+    "node": true,
+    "es2024": true
+  },
+  "categories": {
+    "correctness": "deny",
+    "suspicious": "deny"
+  },
+  "rules": {
+    "no-console": "deny",
+    "no-debugger": "deny",
+    "no-alert": "deny",
+    "no-var": "deny",
+    "prefer-const": "deny",
+    "eqeqeq": [
+      "deny",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
+    "no-underscore-dangle": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "scripts/**",
+        "lib/logger.ts",
+        "src/lib/logger.ts",
+        "drizzle.config.ts",
+        "db/migrate.ts",
+        "db/seed.ts"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "**/__tests__/**",
+        "**/*.test.{ts,tsx}",
+        "**/*.spec.{ts,tsx}",
+        "tests/**",
+        "e2e/**",
+        "scripts/**"
+      ],
+      "rules": {
+        "no-console": "off",
+        "no-await-in-loop": "off",
+        "unicorn/consistent-function-scoping": "off"
+      }
+    }
+  ]
+}

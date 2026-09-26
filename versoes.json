@@ -1,0 +1,82 @@
+{
+  "$comentario": "Versões-alvo alinhadas para todos os repositórios MUTU@L. Fonte: analise-stack.md (26/09/2026) + npm view latest na mesma data. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
+  "atualizado": "2026-09-26",
+  "runtime": {
+    "node": {
+      "versao": "24.21.0",
+      "docker": "node:24-alpine",
+      "engines": ">=24.21.0 <25",
+      "nota": "Node 24 'Krypton' é a LTS ativa. O Node 20 está em fim de vida desde 30/04/2026. O Node 26 só passa a LTS em outubro de 2026: reavaliar nessa altura."
+    },
+    "bun": {
+      "versao": "1.4.2",
+      "docker": "oven/bun:1.4.2-alpine",
+      "engines": ">=1.4.2",
+      "nota": "Só no mutual_cerebro. packageManager deve ser bun@1.4.2 (não pnpm)."
+    },
+    "pnpm": {
+      "versao": "10.34.5",
+      "packageManager": "pnpm@10.34.5",
+      "nota": "Última da linha 10. A subida para pnpm 11/12 (mudanças em onlyBuiltDependencies/minimumReleaseAge) fica para uma onda própria."
+    }
+  },
+  "pacotes": {
+    "typescript": {
+      "versao": "6.0.3",
+      "nota": "Todos em 6.0.x (a ponte). O 7.0.2 (compilador nativo) já é latest: medir num ramo de CI antes de subir; o Renovate não propõe o major 7 automaticamente."
+    },
+    "next": { "versao": "16.3.6" },
+    "react": { "versao": "19.3.0" },
+    "react-dom": { "versao": "19.3.0" },
+    "@types/react": { "versao": "19.3.0" },
+    "@types/react-dom": { "versao": "19.3.0" },
+    "better-auth": {
+      "versao": "1.7.6",
+      "nota": "Servidor (Cérebro) e clientes (apps) sempre na mesma minor. Subir o Cérebro primeiro (better-auth migrate) e depois as apps."
+    },
+    "zod": {
+      "versao": "4.6.5",
+      "nota": "Só nas apps Next. O Cérebro usa effect/Schema."
+    },
+    "effect": {
+      "versao": "4.0.0-rc.117",
+      "nota": "Effect 4 RC aprovado pelo responsável (26/09/2026). Os pacotes @effect/* usam o mesmo número (ex.: @effect/platform-bun, @effect/vitest 4.0.0-rc.117). Fixar a versão exata, sem ^."
+    },
+    "xstate": { "versao": "5.33.2" },
+    "@xstate/react": { "versao": "6.1.0" },
+    "vitest": {
+      "versao": "5.0.2",
+      "nota": "Todas as apps passam para a 5.0 (o mutual_qr já está nela). O Cérebro continua com bun test."
+    },
+    "@playwright/test": { "versao": "1.63.0" },
+    "oxlint": { "versao": "1.85.0" },
+    "oxfmt": { "versao": "0.70.0" },
+    "knip": { "versao": "6.38.0" },
+    "@types/node": {
+      "versao": "24.19.0",
+      "nota": "Acompanha o runtime (Node 24), não o latest (26.x)."
+    },
+    "@types/bun": {
+      "versao": "1.4.2",
+      "nota": "Versão fixa, nunca \"latest\"."
+    },
+    "tailwindcss": { "versao": "4.3.3" },
+    "@tailwindcss/postcss": { "versao": "4.3.3" },
+    "@umporg/ui": {
+      "versao": "0.7.0",
+      "dependencia": "github:UMPORG/mutual_ui#v0.7.0"
+    },
+    "@umporg/config": {
+      "versao": "0.1.0",
+      "dependencia": "github:UMPORG/mutual_config#v0.1.0"
+    },
+    "@tanstack/react-query": { "versao": "5.104.0" },
+    "@tanstack/react-form": { "versao": "1.33.5" },
+    "babel-plugin-react-compiler": { "versao": "1.0.0" },
+    "drizzle-orm": {
+      "versao": "0.45.3",
+      "nota": "A 1.0 está em RC: esperar pela estável."
+    },
+    "drizzle-kit": { "versao": "0.31.11" }
+  }
+}

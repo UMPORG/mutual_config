@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "MUTU@L — serviços Bun (Cérebro)",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "types": ["bun"],
+    "noEmit": true
+  }
+}

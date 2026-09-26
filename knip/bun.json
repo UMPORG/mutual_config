@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "src/index.ts",
+    "scripts/**/*.{ts,mts,js,mjs}",
+    "drizzle.config.ts",
+    "src/**/*.test.ts",
+    "src/**/__tests__/**/*.ts"
+  ],
+  "project": ["src/**/*.ts", "scripts/**/*.{ts,mts,js,mjs}"],
+  "ignore": ["drizzle/**", "better-auth_migrations/**"],
+  "ignoreDependencies": ["@umporg/config", "@types/bun"],
+  "ignoreBinaries": ["docker"],
+  "ignoreExportsUsedInFile": true
+}

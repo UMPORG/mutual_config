@@ -1,0 +1,202 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Preset Renovate partilhado pelos repositórios MUTU@L (UMPORG).",
+    "Horário semanal (segunda de madrugada, Europe/Lisbon), grupos por ecossistema, automerge só de patch e de minor em devDependencies com CI verde, alertas de segurança imediatos."
+  ],
+  "extends": ["config:recommended", "docker:pinDigests", ":dependencyDashboard"],
+  "timezone": "Europe/Lisbon",
+  "schedule": ["* 0-6 * * 1"],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Painel de dependências (Renovate)",
+  "dependencyDashboardHeader": "Este painel lista as atualizações de dependências detetadas pelo Renovate. As atualizações major de TypeScript, Node.js, Bun e pnpm só avançam depois de aprovadas aqui.",
+  "labels": ["dependências"],
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "atualizar",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "para {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "rangeStrategy": "bump",
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "postUpdateOptions": ["pnpmDedupe"],
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "prCreation": "immediate",
+    "minimumReleaseAge": null,
+    "labels": ["dependências", "segurança"],
+    "commitMessageSuffix": "[segurança]"
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 0-6 1 * *"],
+    "commitMessageAction": "manutenção do",
+    "commitMessageTopic": "lockfile",
+    "commitMessageExtra": ""
+  },
+  "packageRules": [
+    {
+      "description": "Títulos em pt-PT para os restantes tipos de atualização.",
+      "matchUpdateTypes": ["pin"],
+      "commitMessageAction": "fixar"
+    },
+    {
+      "matchUpdateTypes": ["pinDigest"],
+      "commitMessageAction": "fixar o digest de"
+    },
+    {
+      "matchUpdateTypes": ["digest"],
+      "commitMessageAction": "atualizar o digest de"
+    },
+    {
+      "matchUpdateTypes": ["rollback"],
+      "commitMessageAction": "reverter"
+    },
+    {
+      "matchUpdateTypes": ["replacement"],
+      "commitMessageAction": "substituir"
+    },
+    {
+      "description": "Automerge: patches (com CI verde).",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge: minor em devDependencies (com CI verde).",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true
+    },
+    {
+      "description": "Tipos @types/* juntos (os de React vão com o grupo Next.js e React).",
+      "matchPackageNames": ["@types/**"],
+      "groupName": "tipos (@types)",
+      "groupSlug": "tipos"
+    },
+    {
+      "description": "Next.js e React sobem sempre juntos.",
+      "matchPackageNames": [
+        "next",
+        "@next/**",
+        "eslint-config-next",
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom",
+        "babel-plugin-react-compiler"
+      ],
+      "groupName": "Next.js e React",
+      "groupSlug": "next-react"
+    },
+    {
+      "description": "Better Auth: servidor (Cérebro) e clientes (apps) na mesma minor. Sem automerge: o Cérebro sobe primeiro (better-auth migrate) e só depois as apps.",
+      "matchPackageNames": ["better-auth", "@better-auth/**"],
+      "groupName": "Better Auth",
+      "groupSlug": "better-auth",
+      "automerge": false
+    },
+    {
+      "description": "Ecossistema Effect. Está na 4.0 RC (aprovado): permitir pré-versões, fixar versão exata, sem automerge.",
+      "matchPackageNames": ["effect", "@effect/**"],
+      "groupName": "Effect",
+      "groupSlug": "effect",
+      "rangeStrategy": "pin",
+      "ignoreUnstable": false,
+      "respectLatest": false,
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["drizzle-orm", "drizzle-kit", "drizzle-zod", "drizzle-seed"],
+      "groupName": "Drizzle",
+      "groupSlug": "drizzle"
+    },
+    {
+      "matchPackageNames": ["xstate", "@xstate/**"],
+      "groupName": "XState",
+      "groupSlug": "xstate"
+    },
+    {
+      "matchPackageNames": ["vitest", "@vitest/**"],
+      "groupName": "Vitest",
+      "groupSlug": "vitest"
+    },
+    {
+      "matchPackageNames": ["oxlint", "oxfmt", "oxlint-tsgolint"],
+      "groupName": "oxc (oxlint e oxfmt)",
+      "groupSlug": "oxc"
+    },
+    {
+      "matchPackageNames": ["tailwindcss", "@tailwindcss/**", "tw-animate-css"],
+      "groupName": "Tailwind CSS",
+      "groupSlug": "tailwind"
+    },
+    {
+      "matchPackageNames": [
+        "@playwright/test",
+        "playwright",
+        "playwright-core",
+        "mcr.microsoft.com/playwright"
+      ],
+      "groupName": "Playwright",
+      "groupSlug": "playwright"
+    },
+    {
+      "description": "TypeScript: o major (7.0, compilador nativo) só com aprovação no painel, depois de medido num ramo de CI.",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Node.js: .nvmrc, .node-version, engines, imagens Docker node e setup-node. Majors só com aprovação (passar a uma nova LTS é decisão explícita).",
+      "matchDepNames": ["node"],
+      "groupName": "Node.js",
+      "groupSlug": "node"
+    },
+    {
+      "matchDepNames": ["node"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "@types/node acompanha o runtime (Node 24). Atualizar este limite quando se mudar de LTS.",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    },
+    {
+      "description": "Bun (Cérebro): .bun-version, packageManager, imagem oven/bun, setup-bun e @types/bun juntos.",
+      "matchDepNames": ["bun", "oven/bun", "@types/bun"],
+      "groupName": "Bun",
+      "groupSlug": "bun"
+    },
+    {
+      "matchDepNames": ["bun", "oven/bun"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "pnpm (packageManager): majors só com aprovação.",
+      "matchDepNames": ["pnpm"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Pacotes internos @umporg/* (dependências git github:UMPORG/...#vX.Y.Z, seguidas por tag) e este próprio preset: a qualquer hora, sem espera de maturação.",
+      "matchDepNames": ["@umporg/**"],
+      "schedule": ["at any time"],
+      "minimumReleaseAge": null,
+      "labels": ["dependências", "umporg"]
+    },
+    {
+      "matchDatasources": ["github-tags"],
+      "matchPackageNames": ["UMPORG/**"],
+      "schedule": ["at any time"],
+      "minimumReleaseAge": null,
+      "labels": ["dependências", "umporg"]
+    }
+  ]
+}
