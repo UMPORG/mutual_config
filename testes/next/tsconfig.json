@@ -1,0 +1,5 @@
+{
+  "extends": ["../../tsconfig/next.json", "../../tsconfig/estrito.json"],
+  "compilerOptions": { "plugins": [], "incremental": false },
+  "include": ["*.ts", "*.tsx"]
+}

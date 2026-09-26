@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
+      - name: Instalar ferramentas (versões de versoes.json)
+        run: >-
+          npm install --no-save --no-package-lock
+          typescript@6.0.3 @types/node@24.19.0 @types/react@19.3.0 @types/bun@1.4.2
+          oxlint@1.85.0 oxfmt@0.70.0
+
+      - name: JSON válido, extends e versões coerentes
+        run: node scripts/validar.mjs
+
+      - name: tsconfig (next + estrito, bun)
+        run: |
+          npx tsc -p testes/next --noEmit
+          npx tsc -p testes/bun --noEmit
+
+      - name: oxlint (preset next)
+        run: npx oxlint -c oxlint/next.json scripts testes
+
+      - name: oxfmt (preset base)
+        run: npx oxfmt --check -c oxfmt/base.json .
+
+      - name: Renovate (preset)
+        run: npx --yes --package renovate@44 -- renovate-config-validator --strict renovate/default.json default.json
