@@ -11,8 +11,10 @@ Usage per tool: [README.md](README.md).
   Never move or delete a published tag.
 - A target-version change touches `versoes.json`, `.nvmrc` (Node), the Renovate preset
   (`@types/node` `allowedVersions`) and the tool versions pinned in `.github/workflows/ci.yml`;
-  `validar.mjs` checks only `versoes.json` against `.nvmrc`/`package.json`. Docs point to
-  `versoes.json` keys instead of copying numbers.
+  `validar.mjs` checks `versoes.json` against `.nvmrc`/`package.json` (version, packageManager,
+  `@types/node` major) and that `.oxfmtrc.json` equals `oxfmt/base.json` (change both together); it
+  does not check `ci.yml` or the Renovate preset. Docs point to `versoes.json` keys instead of
+  copying numbers.
 - A preset change changes lint/format/type errors in every app: say so in the commit and expect the
   apps to need a follow-up.
 - Tool limits that shape the files: oxfmt has no `extends` (apps copy `oxfmt/*.json`); oxlint
