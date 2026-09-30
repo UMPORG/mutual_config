@@ -57,8 +57,8 @@ propõe a subida da tag quando sair uma nova versão deste repositório.
 O que o preset faz:
 
 - **Horário:** semanal, segunda-feira entre as 00h00 e as 07h00 (`Europe/Lisbon`).
-- **Títulos dos PR em pt-PT** com prefixo `chore(deps):` (ex.: `chore(deps): atualizar next para v16.3.7`,
-  `chore(deps): atualizar Next.js e React`, `chore(deps): manutenção do lockfile`).
+- **Títulos dos PR em pt-PT** com prefixo `chore(deps):` (ex.: `chore(deps): atualizar Next.js e React`,
+  `chore(deps): manutenção do lockfile`).
 - **Grupos:** Next.js e React (`next`, `react`, `react-dom`, `@types/react*`,
   `babel-plugin-react-compiler`); Better Auth (`better-auth`, `@better-auth/*`); Effect (`effect`,
   `@effect/*`); Drizzle; XState; Vitest; oxc (`oxlint`, `oxfmt`); `@types/*`; Tailwind CSS;
@@ -68,7 +68,7 @@ O que o preset faz:
 - **Better Auth sem automerge:** servidor e clientes têm de ficar na mesma minor. Ordem: primeiro o
   Cérebro (com `better-auth migrate`), depois as apps.
 - **Effect 4 RC:** o grupo aceita pré-versões (`rc`), fixa a versão exata e não faz automerge.
-- **Majors que pedem aprovação no Painel de dependências:** TypeScript (7.0), Node.js, Bun e pnpm.
+- **Majors que pedem aprovação no Painel de dependências:** TypeScript, Node.js, Bun e pnpm.
   `@types/node` fica limitado a `<25` (acompanha o Node 24).
 - **Segurança:** alertas de vulnerabilidade (GitHub + OSV) criam PR **imediatamente**, fora do horário
   e sem esperar maturação.
@@ -138,7 +138,7 @@ Regras:
 - **Sem `baseUrl`** (deprecado no TypeScript 6; `paths` funciona sem ele).
 - `types` é explícito porque no TypeScript 6 o valor por omissão é `[]`. Uma app que use
   globais do Vitest junta-os: `"types": ["node", "vitest/globals"]`.
-- Versão-alvo do TypeScript: a de `versoes.json`. O 7.0 (compilador nativo) mede-se primeiro num ramo.
+- Versão-alvo do TypeScript: a de `versoes.json` (a nota explica porque o major seguinte espera).
 
 `exactOptionalPropertyTypes` fica fora da base (em `estrito.json`) porque ligá-lo nas apps Next custa
 dezenas a centenas de erros; é recomendado onde já está perto de zero.
@@ -173,7 +173,7 @@ Cérebro: `"extends": ["./node_modules/@umporg/config/oxlint/base.json"]` e
 Importante:
 
 - O `extends` do oxlint é um **caminho relativo ao ficheiro**, não um nome de pacote.
-- **`ignorePatterns` não é herdado** (verificado com o oxlint 1.85): cada app declara os seus.
+- **`ignorePatterns` não é herdado** (verificado): cada app declara os seus.
 - Os `overrides` herdados funcionam com caminhos relativos à raiz da app.
 - A app pode acrescentar `rules`/`overrides` próprios (ex.: `no-console: off` num ficheiro concreto),
   sempre com um comentário a justificar.
@@ -252,10 +252,8 @@ Os valores vêm de `versoes.json` (`runtime.*`); não se repetem aqui para não 
 
 ## Versões-alvo (`versoes.json`)
 
-O ficheiro é a fonte (versão e nota por pacote). Depois da adoção, é o Renovate que as mantém.
-Quando uma versão-alvo mudar por decisão (ex.: Node 26 LTS, TypeScript 7), atualiza-se aqui, no
-`.nvmrc`, no preset Renovate e nas versões das ferramentas em `.github/workflows/ci.yml`, e sai uma
-nova tag.
+O ficheiro é a fonte (versão e nota por pacote); depois da adoção é o Renovate que as mantém.
+Mudar uma versão-alvo por decisão: ver [CLAUDE.md](CLAUDE.md).
 
 ---
 
