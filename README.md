@@ -132,26 +132,10 @@ Regras:
 - **Sem `baseUrl`** (deprecado no TypeScript 6; `paths` funciona sem ele).
 - `types` é explícito porque no TypeScript 6 o valor por omissão passou a `[]`. Uma app que use
   globais do Vitest junta-os: `"types": ["node", "vitest/globals"]`.
-- Versão-alvo: **TypeScript 6.0.3** em todos. O 7.0 (compilador nativo) mede-se primeiro num ramo.
+- Versão-alvo do TypeScript: a de `versoes.json`. O 7.0 (compilador nativo) mede-se primeiro num ramo.
 
-Porque é que `exactOptionalPropertyTypes` não está na base: o Cérebro, o mutual_qr e o mutual_ui
-(este com `false` explícito) diferem, e nas apps Next ligá-lo hoje custaria dezenas a centenas de
-erros (medido a 26/09/2026 com `tsc --noEmit`):
-
-| Repo | `noUncheckedIndexedAccess` | `noImplicitOverride` + `noFallthroughCasesInSwitch` | `exactOptionalPropertyTypes` |
-|---|---|---|---|
-| portal | 40 | 0 | 11 |
-| backoffice | 117 | 0 | 132 |
-| eventos | 35 | 0 | 193 |
-| simplex | 51 | 0 | 201 |
-| saude | 0 (já ligado) | 0 | 12 |
-| qr | 0 | 0 | 0 |
-| dns | 0 | 0 | 32 |
-| cerebro | 0 (já ligado) | 0 | 0 (já ligado) |
-
-`noUncheckedIndexedAccess` fica na base (já é usado no Cérebro, na Saúde e no mutual_ui, e o custo
-nas restantes é baixo). `exactOptionalPropertyTypes` fica em `estrito.json`: recomendado para a
-Saúde, o mutual_qr e o mutual_dns, que estão perto de zero.
+`exactOptionalPropertyTypes` fica fora da base (em `estrito.json`) porque ligá-lo nas apps Next custa
+dezenas a centenas de erros; é recomendado onde já está perto de zero.
 
 ---
 
@@ -188,27 +172,10 @@ Importante:
 - A app pode acrescentar `rules`/`overrides` próprios (ex.: `no-console: off` num ficheiro concreto),
   sempre com um comentário a justificar.
 
-O que ficou em cada preset e porquê (reconciliação das 8 configurações existentes):
-
-| Decisão | Porquê |
-|---|---|
-| `correctness` + `suspicious` em `deny` na base | `correctness` estava em todos; `suspicious` em 6 de 8. |
-| `perf` em `deny` no preset `next` | Já estava em 5 das 7 apps. O Cérebro fica sem ele (servidor, laços com `await` intencionais em migrações). |
-| Categoria `style` **fora** dos presets | 4 apps usam-na, mas cada uma desliga regras diferentes (`no-magic-numbers`, `id-length`, `sort-keys`…). Fica opt-in em cada app. |
-| Plugins `react`, `jsx-a11y`, `nextjs` no preset `next` | Acessibilidade é requisito do produto; as regras de hooks do React preparam a adoção do React Compiler. |
-| `eqeqeq` com `{ "null": "ignore" }` | Cérebro e Saúde já o usavam; permite o idioma `x == null`. |
-| `no-console`, `no-debugger`, `no-alert`, `no-var`, `prefer-const` em `deny` | Comuns a todos (`no-alert` vinha do Cérebro; nas apps usa-se o `ConfirmDialog` do `@umporg/ui`). |
-| `no-underscore-dangle` desligado | O backoffice e a Saúde já o desligavam; o mutual_qr tinha uma exceção. |
-| `no-console` desligado em `scripts/**`, `lib/logger.ts`, `src/lib/logger.ts`, `drizzle.config.ts`, `db/migrate.ts`, `db/seed.ts` e testes | União das exceções existentes. |
-| `no-await-in-loop` e `unicorn/consistent-function-scoping` desligados em testes, e2e e scripts | Idem. |
-
-Impacto medido (achados novos ao trocar a config atual pelo preset, sem contar scripts e testes,
-26/09/2026): portal 40, backoffice ~185, eventos ~100, simplex ~220, saude ~90 (metade são
-`no-await-in-loop` em `lib/` e `db/`), qr ~20, dns 15, Cérebro ~50 (`no-array-sort` → `toSorted()`).
-A maioria vem das regras de hooks do React (`refs`, `set-state-in-effect`, `no-array-index-key`),
-que são as mesmas que o React Compiler exige. O simplex e o qr **descem** muito face a hoje (têm
-`style` ligado com milhares de avisos). Quando uma regra não fizer sentido numa app, desligá-la
-localmente com justificação e abrir PR aqui se valer para todas.
+Decisões do preset: `correctness` + `suspicious` em `deny` na base; `perf` e os plugins `react`,
+`jsx-a11y`, `nextjs` só no preset `next`; categoria `style` fora (opt-in por app); `eqeqeq` com
+`{ "null": "ignore" }`; `no-console`/`no-await-in-loop` desligados em scripts, testes e loggers. Uma
+regra que não sirva uma app desliga-se localmente com justificação; se valer para todas, PR aqui.
 
 ---
 
@@ -225,9 +192,8 @@ cp node_modules/@umporg/config/oxfmt/base.json .oxfmtrc.json   # Cérebro
 - Todas as configurações existentes eram **idênticas** nas opções (`printWidth: 100`, 2 espaços,
   aspas duplas, `;`, `trailingComma: all`, LF, newline final); o preset mantém-nas.
 - `oxfmt/next.json` liga **`sortTailwindcss`** (o mesmo algoritmo do `prettier-plugin-tailwindcss`)
-  com `stylesheet: ./app/globals.css` e as funções `cn`/`cva`. Isto permite ao mutual_qr **remover o
-  Prettier** e ao mutual_portal passar a ter formatador. A primeira execução reordena classes
-  (medido: eventos 62 ficheiros, backoffice 55, qr 21): fazer um commit só de formatação.
+  com `stylesheet: ./app/globals.css` e as funções `cn`/`cva`. A primeira execução reordena classes:
+  fazer um commit só de formatação.
 - Markdown (`**/*.md`) continua fora da formatação, como já estava.
 
 ---
@@ -258,10 +224,8 @@ Cérebro: o mesmo com `@umporg/config/knip/bun.json`. Em alternativa, copiar o J
 - `knip/bun.json`: `src/index.ts`, `scripts/**`, `drizzle.config.ts` e os testes `bun test`.
 - Script e CI: `"knip": "knip"`; na CI começar com `knip --no-exit-code` (aviso) e passar a bloqueante
   quando a app estiver limpa.
-- Ensaio no mutual_eventos: encontrou `@react-pdf/renderer`, `@tanstack/react-table`,
-  `@tanstack/react-virtual`, `next-safe-action` e `shadcn` sem uso, tal como a análise da stack
-  previa. Mocks de e2e carregados só pelo `webServer` do Playwright (ex.: `e2e/mock-cerebro.mjs`)
-  aparecem como ficheiros não usados: acrescentá-los a `entry` na app.
+- Mocks de e2e carregados só pelo `webServer` do Playwright (ex.: `e2e/mock-cerebro.mjs`) aparecem
+  como ficheiros não usados: acrescentá-los a `entry` na app.
 
 ---
 
@@ -284,30 +248,9 @@ Cérebro: o mesmo com `@umporg/config/knip/bun.json`. Em alternativa, copiar o J
 
 ## Versões-alvo (`versoes.json`)
 
-Escolhidas a partir da análise da stack e do `npm view` de 26/09/2026:
-
-| Pacote | Versão | Nota |
-|---|---|---|
-| Node | 24.21.0 | LTS ativa; o 20 está em fim de vida |
-| Bun | 1.4.2 | só Cérebro |
-| pnpm | 10.34.5 | 11/12 numa onda própria |
-| typescript | 6.0.3 | 7.0 medido primeiro num ramo |
-| next | 16.3.6 | |
-| react / react-dom | 19.3.0 | |
-| better-auth | 1.7.6 | servidor e clientes juntos |
-| zod | 4.6.5 | só apps |
-| effect | 4.0.0-rc.117 | RC aprovado; `@effect/*` no mesmo número |
-| xstate / @xstate/react | 5.33.2 / 6.1.0 | |
-| vitest | 5.0.2 | todas as apps |
-| @playwright/test | 1.63.0 | |
-| oxlint / oxfmt | 1.85.0 / 0.70.0 | |
-| knip | 6.38.0 | |
-| @types/node | 24.19.0 | acompanha o Node 24 |
-| tailwindcss | 4.3.3 | |
-| @umporg/ui | 0.7.0 | `github:UMPORG/mutual_ui#v0.7.0` |
-
-Depois da adoção, é o Renovate que as mantém. Quando uma versão-alvo mudar por decisão (ex.: Node 26
-LTS, TypeScript 7), atualiza-se aqui, no `.nvmrc` e no preset Renovate, e sai uma nova tag.
+O ficheiro é a fonte (versão e nota por pacote). Depois da adoção, é o Renovate que as mantém.
+Quando uma versão-alvo mudar por decisão (ex.: Node 26 LTS, TypeScript 7), atualiza-se aqui, no
+`.nvmrc` e no preset Renovate, e sai uma nova tag.
 
 ---
 
