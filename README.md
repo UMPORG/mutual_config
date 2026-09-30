@@ -9,18 +9,23 @@ Repositório público, consumido como dependência git (não é publicado no npm
 ```jsonc
 // package.json da app
 "devDependencies": {
-  "@umporg/config": "github:UMPORG/mutual_config#v0.1.0"
+  "@umporg/config": "github:UMPORG/mutual_config#vX.Y.Z"
 }
 ```
 
 ```sh
-pnpm add -D github:UMPORG/mutual_config#v0.1.0   # apps Next (pnpm)
-bun add -d github:UMPORG/mutual_config#v0.1.0    # mutual_cerebro (Bun)
+pnpm add -D github:UMPORG/mutual_config#vX.Y.Z   # apps Next (pnpm)
+bun add -d github:UMPORG/mutual_config#vX.Y.Z    # mutual_cerebro (Bun)
 ```
 
-O pacote não tem código nem dependências: só ficheiros JSON. Cada app continua a ter os seus
-próprios ficheiros de configuração, que **estendem** (ou, quando a ferramenta não o permite,
-**copiam**) os presets daqui.
+`vX.Y.Z` é a tag atual: `pacotes["@umporg/config"].versao` em `versoes.json`.
+
+O pacote publicado não tem código nem dependências: só ficheiros JSON (`scripts/` e `testes/`
+servem só a CI deste repositório). Cada app continua a ter os seus próprios ficheiros de
+configuração, que **estendem** (ou, quando a ferramenta não o permite, **copiam**) os presets daqui.
+
+O `mutual_cerebro` ainda não depende deste pacote: mantém cópias equivalentes dos presets em
+`config/`. Os exemplos «Cérebro» abaixo mostram como fica quando o adotar.
 
 | Ficheiro | Para quê | Como a app o usa |
 |---|---|---|
@@ -41,12 +46,12 @@ próprios ficheiros de configuração, que **estendem** (ou, quando a ferramenta
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>UMPORG/mutual_config#v0.1.0"]
+  "extends": ["github>UMPORG/mutual_config#vX.Y.Z"]
 }
 ```
 
 `github>UMPORG/mutual_config` carrega o `default.json` da raiz, que por sua vez estende
-`renovate/default.json`. Fixar a tag (`#v0.1.0`) é opcional mas recomendado: o próprio Renovate
+`renovate/default.json`. Fixar a tag (`#vX.Y.Z`) é opcional mas recomendado: o próprio Renovate
 propõe a subida da tag quando sair uma nova versão deste repositório.
 
 O que o preset faz:
@@ -71,8 +76,9 @@ O que o preset faz:
   `@umporg/*`.
 - **`@umporg/*`** (dependências `github:UMPORG/...#vX.Y.Z`) são seguidas por **tag**, a qualquer hora.
 - **Docker:** digests fixados (`docker:pinDigests`).
-- **Ficheiros de versão:** `.nvmrc`, `.node-version`, `.bun-version`, `engines`, `packageManager`
-  e imagens Docker `node`/`oven/bun` são atualizados pelos grupos Node.js e Bun.
+- **Ficheiros de versão:** `.nvmrc`, `.node-version`, `.bun-version`, `engines`, o `packageManager`
+  do Bun e as imagens Docker `node`/`oven/bun` são atualizados pelos grupos Node.js e Bun (o pnpm
+  não tem grupo; só o major pede aprovação).
 - **Manutenção do lockfile** mensal (dia 1, de madrugada).
 - **Painel de dependências** ligado (issue "Painel de dependências (Renovate)").
 
@@ -90,7 +96,7 @@ Presets:
 - `tsconfig/next.json` — base + DOM, `jsx: react-jsx`, `allowJs`, `noEmit`, `incremental`, plugin
   `next` e `types: ["node"]`.
 - `tsconfig/bun.json` — base + `exactOptionalPropertyTypes`, `target/lib: ESNext`, `types: ["bun"]`,
-  `noEmit` (é o que o Cérebro já usa).
+  `noEmit` (as mesmas opções das cópias em `config/` do Cérebro).
 - `tsconfig/estrito.json` — camada opcional que só liga `exactOptionalPropertyTypes`.
 
 App Next (`tsconfig.json`):
@@ -130,7 +136,7 @@ Regras:
 - **`paths`, `include`, `exclude`, `outDir` e `rootDir` ficam sempre na app**: o TypeScript resolve-os
   em relação ao ficheiro que os declara, por isso não podem vir do preset.
 - **Sem `baseUrl`** (deprecado no TypeScript 6; `paths` funciona sem ele).
-- `types` é explícito porque no TypeScript 6 o valor por omissão passou a `[]`. Uma app que use
+- `types` é explícito porque no TypeScript 6 o valor por omissão é `[]`. Uma app que use
   globais do Vitest junta-os: `"types": ["node", "vitest/globals"]`.
 - Versão-alvo do TypeScript: a de `versoes.json`. O 7.0 (compilador nativo) mede-se primeiro num ramo.
 
@@ -189,12 +195,12 @@ cp node_modules/@umporg/config/oxfmt/next.json .oxfmtrc.json   # apps Next
 cp node_modules/@umporg/config/oxfmt/base.json .oxfmtrc.json   # Cérebro
 ```
 
-- Todas as configurações existentes eram **idênticas** nas opções (`printWidth: 100`, 2 espaços,
-  aspas duplas, `;`, `trailingComma: all`, LF, newline final); o preset mantém-nas.
+- Opções comuns aos dois presets: `printWidth: 100`, 2 espaços, aspas duplas, `;`,
+  `trailingComma: all`, LF, newline final.
 - `oxfmt/next.json` liga **`sortTailwindcss`** (o mesmo algoritmo do `prettier-plugin-tailwindcss`)
   com `stylesheet: ./app/globals.css` e as funções `cn`/`cva`. A primeira execução reordena classes:
   fazer um commit só de formatação.
-- Markdown (`**/*.md`) continua fora da formatação, como já estava.
+- Markdown (`**/*.md`) fica fora da formatação (`ignorePatterns`).
 
 ---
 
@@ -231,18 +237,16 @@ Cérebro: o mesmo com `@umporg/config/knip/bun.json`. Em alternativa, copiar o J
 
 ## Node, Bun e pnpm
 
-- `.nvmrc`: copiar o deste repositório (`24.21.0`, Node 24 LTS "Krypton").
-- `package.json` das apps:
-  ```json
-  "engines": { "node": ">=24.21.0 <25" },
-  "packageManager": "pnpm@10.34.5"
-  ```
-  e `engine-strict=true` no `.npmrc`.
-- Docker: `FROM node:24-alpine` (o Renovate fixa o digest). CI: `actions/setup-node` com
+Os valores vêm de `versoes.json` (`runtime.*`); não se repetem aqui para não divergirem.
+
+- `.nvmrc`: copiar o deste repositório.
+- `package.json` das apps: `"engines": { "node": "<runtime.node.engines>" }`,
+  `"packageManager": "<runtime.pnpm.packageManager>"` e `engine-strict=true` no `.npmrc`.
+- Docker: `FROM <runtime.node.docker>` (o Renovate fixa o digest). CI: `actions/setup-node` com
   `node-version-file: .nvmrc`.
-- Cérebro: `.bun-version` com `1.4.2`, `"packageManager": "bun@1.4.2"`, `"engines": { "bun": ">=1.4.2" }`,
-  `FROM oven/bun:1.4.2-alpine`, `oven-sh/setup-bun` com `bun-version-file: .bun-version`,
-  `@types/bun` fixo em `1.4.2`.
+- Cérebro: `.bun-version` com `runtime.bun.versao`, `"packageManager": "bun@<versão>"`,
+  `"engines": { "bun": "<runtime.bun.engines>" }`, `FROM <runtime.bun.docker>`, `oven-sh/setup-bun`
+  com `bun-version-file: .bun-version`, `@types/bun` fixo na mesma versão (nunca `latest`).
 
 ---
 
@@ -250,7 +254,8 @@ Cérebro: o mesmo com `@umporg/config/knip/bun.json`. Em alternativa, copiar o J
 
 O ficheiro é a fonte (versão e nota por pacote). Depois da adoção, é o Renovate que as mantém.
 Quando uma versão-alvo mudar por decisão (ex.: Node 26 LTS, TypeScript 7), atualiza-se aqui, no
-`.nvmrc` e no preset Renovate, e sai uma nova tag.
+`.nvmrc`, no preset Renovate e nas versões das ferramentas em `.github/workflows/ci.yml`, e sai uma
+nova tag.
 
 ---
 
@@ -261,6 +266,4 @@ Quando uma versão-alvo mudar por decisão (ex.: Node 26 LTS, TypeScript 7), atu
 - A CI (`.github/workflows/ci.yml`) corre ainda: `tsc` sobre `testes/next` e `testes/bun`
   (os presets compilam), oxlint com o preset `next`, oxfmt com o preset `base` e o
   `renovate-config-validator --strict`.
-- Nova versão: atualizar `version` no `package.json` e `pacotes["@umporg/config"]` no `versoes.json`,
-  commit, `git tag vX.Y.Z`, `git push origin main --tags`. As apps sobem a tag na dependência (o
-  Renovate propõe-no).
+- Nova versão (tag): procedimento em [CLAUDE.md](CLAUDE.md).
