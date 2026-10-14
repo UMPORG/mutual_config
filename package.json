@@ -1,6 +1,6 @@
 {
   "name": "@umporg/config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Configurações partilhadas do MUTU@L: preset Renovate, tsconfig, oxlint, oxfmt, knip e versões-alvo alinhadas.",
   "license": "UNLICENSED",
   "files": [

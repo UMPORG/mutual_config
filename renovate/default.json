@@ -101,13 +101,11 @@
       "automerge": false
     },
     {
-      "description": "Ecossistema Effect. Está na 4.0 RC (aprovado): permitir pré-versões, fixar versão exata, sem automerge.",
+      "description": "Ecossistema Effect (4.0 estável): fixar versão exata, sem automerge.",
       "matchPackageNames": ["effect", "@effect/**"],
       "groupName": "Effect",
       "groupSlug": "effect",
       "rangeStrategy": "pin",
-      "ignoreUnstable": false,
-      "respectLatest": false,
       "automerge": false
     },
     {

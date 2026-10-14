@@ -67,7 +67,7 @@ O que o preset faz:
   (o Renovate nunca faz merge com checks a falhar).
 - **Better Auth sem automerge:** servidor e clientes têm de ficar na mesma minor. Ordem: primeiro o
   Cérebro (com `better-auth migrate`), depois as apps.
-- **Effect 4 RC:** o grupo aceita pré-versões (`rc`), fixa a versão exata e não faz automerge.
+- **Effect 4:** o grupo fixa a versão exata e não faz automerge.
 - **Majors que pedem aprovação no Painel de dependências:** TypeScript, Node.js, Bun e pnpm.
   `@types/node` fica limitado a `<25` (acompanha o Node 24).
 - **Segurança:** alertas de vulnerabilidade (GitHub + OSV) criam PR **imediatamente**, fora do horário

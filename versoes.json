@@ -1,12 +1,12 @@
 {
-  "$comentario": "Versões-alvo alinhadas para todos os repositórios MUTU@L. Fonte: analise-stack.md (26/09/2026) + npm view latest na mesma data. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
-  "atualizado": "2026-09-26",
+  "$comentario": "Versões-alvo alinhadas para todos os repositórios MUTU@L. Fonte: npm view latest em 26/09/2026, reconciliado com as versões das apps em 14/10/2026. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
+  "atualizado": "2026-10-14",
   "runtime": {
     "node": {
       "versao": "24.21.0",
       "docker": "node:24-alpine",
       "engines": ">=24.21.0 <25",
-      "nota": "Node 24 'Krypton' é a LTS ativa. O Node 20 está em fim de vida desde 30/04/2026. O Node 26 só passa a LTS em outubro de 2026: reavaliar nessa altura."
+      "nota": "Node 24 'Krypton' é a LTS ativa. O Node 20 está em fim de vida desde 30/04/2026. O Node 26 passa a LTS em outubro de 2026: a subida é decisão do responsável (ver pendentes)."
     },
     "bun": {
       "versao": "1.4.2",
@@ -39,8 +39,8 @@
       "nota": "Só nas apps Next. O Cérebro usa effect/Schema."
     },
     "effect": {
-      "versao": "4.0.0-rc.117",
-      "nota": "Effect 4 RC aprovado pelo responsável (26/09/2026). Os pacotes @effect/* usam o mesmo número (ex.: @effect/platform-bun, @effect/vitest 4.0.0-rc.117). Fixar a versão exata, sem ^."
+      "versao": "4.0.0",
+      "nota": "Effect 4 estável. Os pacotes @effect/* usam o mesmo número (ex.: @effect/ai-openrouter 4.0.0). Fixar a versão exata, sem ^."
     },
     "xstate": { "versao": "5.33.2" },
     "@xstate/react": { "versao": "6.1.0" },
@@ -63,12 +63,12 @@
     "tailwindcss": { "versao": "4.3.3" },
     "@tailwindcss/postcss": { "versao": "4.3.3" },
     "@umporg/ui": {
-      "versao": "0.7.0",
-      "dependencia": "github:UMPORG/mutual_ui#v0.7.0"
+      "versao": "0.21.0",
+      "dependencia": "github:UMPORG/mutual_ui#v0.21.0"
     },
     "@umporg/config": {
-      "versao": "0.1.0",
-      "dependencia": "github:UMPORG/mutual_config#v0.1.0"
+      "versao": "0.1.1",
+      "dependencia": "github:UMPORG/mutual_config#v0.1.1"
     },
     "@tanstack/react-query": { "versao": "5.104.0" },
     "@tanstack/react-form": { "versao": "1.33.5" },
