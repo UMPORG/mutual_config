@@ -1,5 +1,3 @@
-// Valida os presets: JSON bem formado, `extends` que resolvem e versões coerentes.
-// Uso: node scripts/validar.mjs
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -26,7 +24,6 @@ for (const ficheiro of listarJson(raiz)) {
   }
 }
 
-// `extends` locais (tsconfig e oxlint) têm de apontar para ficheiros existentes.
 for (const [ficheiro, conteudo] of ficheiros) {
   const alvo = conteudo?.extends;
   const lista = Array.isArray(alvo) ? alvo : typeof alvo === "string" ? [alvo] : [];
@@ -38,7 +35,6 @@ for (const [ficheiro, conteudo] of ficheiros) {
   }
 }
 
-// versoes.json: estrutura mínima e coerência com .nvmrc e package.json.
 const versoes = ficheiros.get(join(raiz, "versoes.json"));
 const obrigatorios = [
   "typescript",
@@ -79,7 +75,7 @@ if (majorTiposNode !== nvmrc.split(".")[0]) {
   erros.push(`@types/node (${majorTiposNode}) não acompanha o major do Node (${nvmrc})`);
 }
 
-// .oxfmtrc.json deste repositório tem de ser igual ao preset base (o oxfmt não tem extends).
+// O oxfmt não tem extends: .oxfmtrc.json tem de igualar oxfmt/base.json.
 const oxfmtLocal = ficheiros.get(join(raiz, ".oxfmtrc.json"));
 const oxfmtBase = ficheiros.get(join(raiz, "oxfmt", "base.json"));
 if (JSON.stringify(oxfmtLocal) !== JSON.stringify(oxfmtBase)) {
