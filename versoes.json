@@ -25,7 +25,7 @@
       "versao": "6.0.3",
       "nota": "Todos em 6.0.x (a ponte). O 7.0.2 (compilador nativo) já é latest: medir num ramo de CI antes de subir; o Renovate não propõe o major 7 automaticamente."
     },
-    "next": { "versao": "16.3.6" },
+    "next": { "versao": "16.3.8" },
     "react": { "versao": "19.3.0" },
     "react-dom": { "versao": "19.3.0" },
     "@types/react": { "versao": "19.3.0" },
