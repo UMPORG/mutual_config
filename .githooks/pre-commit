@@ -1,0 +1,10 @@
+#!/bin/sh
+# Bloqueia segredos nos ficheiros em stage (secretlint, sem instalações globais).
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+if [ ! -x node_modules/.bin/secretlint ] && [ ! -f node_modules/.bin/secretlint ]; then
+  echo "pre-commit: secretlint não instalado (corra pnpm install); verificação ignorada." >&2
+  exit 0
+fi
+
+git diff --cached --name-only --diff-filter=ACM -z | xargs -0 -r node_modules/.bin/secretlint --no-glob --secretlintignore .secretlintignore
