@@ -144,7 +144,7 @@
       "groupSlug": "playwright"
     },
     {
-      "description": "TypeScript: o major (7.0, compilador nativo) só com aprovação no painel, depois de medido num ramo de CI.",
+      "description": "TypeScript: os majors só com aprovação no painel, depois de medidos num ramo de CI.",
       "matchPackageNames": ["typescript"],
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true

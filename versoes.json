@@ -1,63 +1,63 @@
 {
-  "$comentario": "Versões-alvo alinhadas para todos os repositórios UMP. Fonte: npm view latest em 26/09/2026, reconciliado com as versões das apps em 14/10/2026. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
+  "$comentario": "Versões-alvo alinhadas para todos os repositórios UMP. Fonte: npm view latest em 14/10/2026. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
   "atualizado": "2026-10-14",
   "runtime": {
     "node": {
       "versao": "24.21.0",
       "docker": "node:24-alpine",
       "engines": ">=24.21.0 <25",
-      "nota": "Node 24 'Krypton' é a LTS ativa. O Node 20 está em fim de vida desde 30/04/2026. O Node 26 passa a LTS em outubro de 2026: a subida é decisão do responsável (ver pendentes)."
+      "nota": "Node 24 'Krypton' é a LTS ativa. O Node 20 está em fim de vida desde 30/04/2026. O Node 26 ainda não é LTS: o máximo é a última 24.x."
     },
     "bun": {
-      "versao": "1.4.2",
-      "docker": "oven/bun:1.4.2-alpine",
-      "engines": ">=1.4.2",
-      "nota": "Só no mutual_cerebro. packageManager deve ser bun@1.4.2 (não pnpm)."
+      "versao": "1.4.3",
+      "docker": "oven/bun:1.4.3-alpine",
+      "engines": ">=1.4.3",
+      "nota": "Só no mutual_cerebro. packageManager deve ser bun@1.4.3 (não pnpm)."
     },
     "pnpm": {
-      "versao": "10.34.5",
-      "packageManager": "pnpm@10.34.5",
-      "nota": "Última da linha 10. A subida para pnpm 11/12 (mudanças em onlyBuiltDependencies/minimumReleaseAge) fica para uma onda própria."
+      "versao": "12.11.2",
+      "packageManager": "pnpm@12.11.2",
+      "nota": "Última estável."
     }
   },
   "pacotes": {
     "typescript": {
-      "versao": "6.0.3",
-      "nota": "Todos em 6.0.x (a ponte). O 7.0.2 (compilador nativo) já é latest: medir num ramo de CI antes de subir; o Renovate não propõe o major 7 automaticamente."
+      "versao": "7.0.2",
+      "nota": "Compilador nativo (major 7). Os presets de tsconfig compilam com ele na CI deste repo."
     },
-    "next": { "versao": "16.3.8" },
+    "next": { "versao": "16.4.0" },
     "react": { "versao": "19.3.0" },
     "react-dom": { "versao": "19.3.0" },
     "@types/react": { "versao": "19.3.0" },
     "@types/react-dom": { "versao": "19.3.0" },
     "better-auth": {
-      "versao": "1.7.6",
+      "versao": "1.7.7",
       "nota": "Servidor (Cérebro) e clientes (apps) sempre na mesma minor. Subir o Cérebro primeiro (better-auth migrate) e depois as apps."
     },
     "zod": {
-      "versao": "4.6.5",
+      "versao": "4.6.7",
       "nota": "Só nas apps Next. O Cérebro usa effect/Schema."
     },
     "effect": {
-      "versao": "4.0.0",
-      "nota": "Effect 4 estável. Os pacotes @effect/* usam o mesmo número (ex.: @effect/ai-openrouter 4.0.0). Fixar a versão exata, sem ^."
+      "versao": "4.0.4",
+      "nota": "Effect 4 estável. Os pacotes @effect/* usam o mesmo número (ex.: @effect/ai-openrouter 4.0.4). Fixar a versão exata, sem ^."
     },
     "xstate": { "versao": "5.33.2" },
     "@xstate/react": { "versao": "6.1.0" },
     "vitest": {
-      "versao": "5.0.2",
+      "versao": "5.0.4",
       "nota": "Todas as apps passam para a 5.0 (o mutual_qr já está nela). O Cérebro continua com bun test."
     },
-    "@playwright/test": { "versao": "1.63.0" },
-    "oxlint": { "versao": "1.85.0" },
-    "oxfmt": { "versao": "0.70.0" },
-    "knip": { "versao": "6.38.0" },
+    "@playwright/test": { "versao": "1.64.1" },
+    "oxlint": { "versao": "1.88.0" },
+    "oxfmt": { "versao": "0.73.0" },
+    "knip": { "versao": "6.41.0" },
     "@types/node": {
-      "versao": "24.19.0",
+      "versao": "24.19.2",
       "nota": "Acompanha o runtime (Node 24), não o latest (26.x)."
     },
     "@types/bun": {
-      "versao": "1.4.2",
+      "versao": "1.4.3",
       "nota": "Versão fixa, nunca \"latest\"."
     },
     "tailwindcss": { "versao": "4.3.3" },
@@ -67,15 +67,15 @@
       "dependencia": "github:UMPORG/mutual_ui#v0.21.0"
     },
     "@umporg/config": {
-      "versao": "0.1.1",
-      "dependencia": "github:UMPORG/mutual_config#v0.1.1"
+      "versao": "0.2.0",
+      "dependencia": "github:UMPORG/mutual_config#v0.2.0"
     },
-    "@tanstack/react-query": { "versao": "5.104.0" },
+    "@tanstack/react-query": { "versao": "5.104.2" },
     "@tanstack/react-form": { "versao": "1.33.5" },
     "babel-plugin-react-compiler": { "versao": "1.0.0" },
     "drizzle-orm": {
-      "versao": "0.45.3",
-      "nota": "A 1.0 está em RC: esperar pela estável."
+      "versao": "0.45.4",
+      "nota": "A 1.0 ainda só existe em RC (dist-tag latest = 0.45.x): esperar pela estável."
     },
     "drizzle-kit": { "versao": "0.31.11" }
   }

@@ -21,7 +21,8 @@
         "null": "ignore"
       }
     ],
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "capitalized-comments": "off"
   },
   "overrides": [
     {
