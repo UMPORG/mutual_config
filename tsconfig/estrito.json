@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "MUTU@L — camada extra (exactOptionalPropertyTypes)",
+  "display": "UMP — camada extra (exactOptionalPropertyTypes)",
   "compilerOptions": {
     "exactOptionalPropertyTypes": true
   }

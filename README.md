@@ -1,6 +1,6 @@
 # @umporg/config
 
-Configurações partilhadas pelos repositórios MUTU@L: preset do **Renovate**, **tsconfig**,
+Configurações partilhadas pelos repositórios UMP: preset do **Renovate**, **tsconfig**,
 **oxlint**, **oxfmt**, **knip**, as **versões-alvo** alinhadas (`versoes.json`) e o `.nvmrc`.
 
 Repositório público, consumido como dependência git (não é publicado no npm), tal como o

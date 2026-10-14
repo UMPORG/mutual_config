@@ -1,5 +1,5 @@
 {
-  "$comentario": "Versões-alvo alinhadas para todos os repositórios MUTU@L. Fonte: npm view latest em 26/09/2026, reconciliado com as versões das apps em 14/10/2026. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
+  "$comentario": "Versões-alvo alinhadas para todos os repositórios UMP. Fonte: npm view latest em 26/09/2026, reconciliado com as versões das apps em 14/10/2026. O Renovate (preset deste repo) mantém-nas atualizadas depois da adoção; este ficheiro diz para onde cada app deve convergir agora.",
   "atualizado": "2026-10-14",
   "runtime": {
     "node": {

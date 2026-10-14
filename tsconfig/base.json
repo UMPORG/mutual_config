@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "MUTU@L — base",
+  "display": "UMP — base",
   "compilerOptions": {
     "strict": true,
     "noUncheckedIndexedAccess": true,
