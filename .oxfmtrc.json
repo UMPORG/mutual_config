@@ -19,6 +19,7 @@
     "drizzle/meta/**",
     "playwright-report/**",
     "test-results/**",
-    "**/*.md"
+    "**/*.md",
+    "**/*.mdx"
   ]
 }

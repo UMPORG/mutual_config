@@ -1,7 +1,7 @@
 # mutual_config (`@umporg/config`)
 
 Shared presets (Renovate, tsconfig, oxlint, oxfmt, knip), target versions (`versoes.json`) and
-`.nvmrc`. The published package is JSON only (`scripts/` and `testes/` serve this repo's CI).
+`.nvmrc`. The published package is JSON plus `vite/index.js` (+ `.d.ts`; plain JS, no TS: Node won't strip types in `node_modules`) — `@umporg/config/vite` exports `lintBase/lintNext/lintBun/fmtBase/fmtNext/fmtBun` and `defineUmpConfig` for the Vite+ `lint`/`fmt` blocks. `validar.mjs` fails if they diverge from `oxlint/*.json`/`oxfmt/*.json` (expand phase; the JSON goes in a later contract release). `scripts/` and `testes/` serve this repo's CI.
 Usage per tool: [README.md](README.md).
 
 - Consumed as a **git dependency pinned to a tag** (`github:UMPORG/mutual_config#vX.Y.Z`; Renovate

@@ -119,6 +119,13 @@
       "groupSlug": "xstate"
     },
     {
+      "matchPackageNames": ["vite-plus", "@voidzero-dev/**"],
+      "groupName": "Vite+",
+      "groupSlug": "vite-plus",
+      "rangeStrategy": "pin",
+      "automerge": false
+    },
+    {
       "matchPackageNames": ["vitest", "@vitest/**"],
       "groupName": "Vitest",
       "groupSlug": "vitest"

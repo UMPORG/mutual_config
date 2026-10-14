@@ -1,7 +1,7 @@
 {
   "name": "@umporg/config",
-  "version": "0.2.0",
-  "description": "Configurações partilhadas do UMP: preset Renovate, tsconfig, oxlint, oxfmt, knip e versões-alvo alinhadas.",
+  "version": "0.3.0",
+  "description": "Configurações partilhadas do UMP: preset Renovate, tsconfig, oxlint, oxfmt, presets JS para Vite+ (./vite), knip e versões-alvo alinhadas.",
   "license": "UNLICENSED",
   "files": [
     "default.json",
@@ -9,6 +9,7 @@
     "tsconfig",
     "oxlint",
     "oxfmt",
+    "vite",
     "knip",
     "versoes.json",
     ".nvmrc",
@@ -17,6 +18,10 @@
   "type": "module",
   "exports": {
     "./versoes.json": "./versoes.json",
+    "./vite": {
+      "types": "./vite/index.d.ts",
+      "default": "./vite/index.js"
+    },
     "./tsconfig/*": "./tsconfig/*",
     "./oxlint/*": "./oxlint/*",
     "./oxfmt/*": "./oxfmt/*",

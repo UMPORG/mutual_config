@@ -20,7 +20,7 @@ bun add -d github:UMPORG/mutual_config#vX.Y.Z    # mutual_cerebro (Bun)
 
 `vX.Y.Z` é a tag atual: `pacotes["@umporg/config"].versao` em `versoes.json`.
 
-O pacote publicado não tem código nem dependências: só ficheiros JSON (`scripts/` e `testes/`
+O pacote publicado não tem dependências: só ficheiros JSON e o `vite/index.js` (JS simples + `.d.ts`, sem TypeScript porque o Node não faz type-stripping dentro de `node_modules`) (`scripts/` e `testes/`
 servem só a CI deste repositório). Cada app continua a ter os seus próprios ficheiros de
 configuração, que **estendem** (ou, quando a ferramenta não o permite, **copiam**) os presets daqui.
 
@@ -33,6 +33,7 @@ O `mutual_cerebro` ainda não depende deste pacote: mantém cópias equivalentes
 | `tsconfig/base.json`, `next.json`, `bun.json`, `estrito.json` | TypeScript | `tsconfig.json` com `extends` |
 | `oxlint/base.json`, `oxlint/next.json` | Lint | `.oxlintrc.json` com `extends` |
 | `oxfmt/base.json`, `oxfmt/next.json` | Formatação | copiar para `.oxfmtrc.json` (o oxfmt não suporta `extends`) |
+| `vite/index.js` (`@umporg/config/vite`) | Lint e formatação para o Vite+ (fusão de `oxlint/*` e `oxfmt/*`) | `vite.config.ts`: `defineConfig(defineUmpConfig({ preset: "next", lint: { ignorePatterns: [...] } }))` |
 | `knip/next.json`, `knip/bun.json` | Código e dependências mortas | `knip.ts` que importa o JSON (ou cópia) |
 | `versoes.json` | Versões-alvo alinhadas | referência para as subidas; o Renovate mantém depois |
 | `.nvmrc` | Versão do Node | copiar para a raiz da app |

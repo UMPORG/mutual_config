@@ -34,6 +34,7 @@ jobs:
         run: |
           npx tsc -p testes/next --noEmit
           npx tsc -p testes/bun --noEmit
+          npx tsc -p testes/vite --noEmit
 
       - name: oxlint (preset next)
         run: npx oxlint -c oxlint/next.json scripts testes

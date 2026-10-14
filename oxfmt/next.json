@@ -23,7 +23,8 @@
     "drizzle/meta/**",
     "playwright-report/**",
     "test-results/**",
-    "**/*.md"
+    "**/*.md",
+    "**/*.mdx"
   ],
   "sortTailwindcss": {
     "stylesheet": "./app/globals.css",

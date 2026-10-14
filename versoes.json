@@ -67,8 +67,8 @@
       "dependencia": "github:UMPORG/mutual_ui#v0.21.0"
     },
     "@umporg/config": {
-      "versao": "0.2.0",
-      "dependencia": "github:UMPORG/mutual_config#v0.2.0"
+      "versao": "0.3.0",
+      "dependencia": "github:UMPORG/mutual_config#v0.3.0"
     },
     "@tanstack/react-query": { "versao": "5.104.2" },
     "@tanstack/react-form": { "versao": "1.33.5" },

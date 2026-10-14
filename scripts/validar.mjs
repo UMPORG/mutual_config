@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ignorar = new Set(["node_modules", ".git"]);
@@ -14,6 +14,21 @@ function listarJson(dir) {
     return nome.endsWith(".json") ? [caminho] : [];
   });
 }
+
+// Chaves ordenadas: a ordem dos objetos não é significativa na comparação.
+function ordenar(valor) {
+  if (Array.isArray(valor)) return valor.map(ordenar);
+  if (valor && typeof valor === "object") {
+    return Object.fromEntries(
+      Object.keys(valor)
+        .toSorted()
+        .map((k) => [k, ordenar(valor[k])]),
+    );
+  }
+  return valor;
+}
+
+const sem$ = ({ $schema: _schema, ...resto }) => resto;
 
 const ficheiros = new Map();
 for (const ficheiro of listarJson(raiz)) {
@@ -80,6 +95,32 @@ const oxfmtLocal = ficheiros.get(join(raiz, ".oxfmtrc.json"));
 const oxfmtBase = ficheiros.get(join(raiz, "oxfmt", "base.json"));
 if (JSON.stringify(oxfmtLocal) !== JSON.stringify(oxfmtBase)) {
   erros.push(".oxfmtrc.json difere de oxfmt/base.json");
+}
+
+// vite/index.js (Vite+) tem de ser a fusão exata dos presets JSON (oxlint extends = fusão).
+{
+  const vite = await import(pathToFileURL(join(raiz, "vite", "index.js")).href);
+  const lerLint = (nome) => ficheiros.get(join(raiz, "oxlint", `${nome}.json`));
+  const fmtLer = (nome) => sem$(ficheiros.get(join(raiz, "oxfmt", `${nome}.json`)));
+  const lintBaseJson = sem$(lerLint("base"));
+  const lintNextJson = sem$(lerLint("next"));
+  const { extends: _herda, ...nextProprio } = lintNextJson;
+  const esperadoNext = {
+    ...lintBaseJson,
+    ...nextProprio,
+    rules: { ...lintBaseJson.rules, ...nextProprio.rules },
+  };
+  const comparar = (nome, obtido, esperado) => {
+    if (JSON.stringify(ordenar(obtido)) !== JSON.stringify(ordenar(esperado))) {
+      erros.push(`vite/index.js: ${nome} difere dos presets JSON`);
+    }
+  };
+  comparar("lintBase", vite.lintBase, lintBaseJson);
+  comparar("lintNext", vite.lintNext, esperadoNext);
+  comparar("lintBun", vite.lintBun, lintBaseJson);
+  comparar("fmtBase", vite.fmtBase, fmtLer("base"));
+  comparar("fmtNext", vite.fmtNext, fmtLer("next"));
+  comparar("fmtBun", vite.fmtBun, fmtLer("base"));
 }
 
 if (erros.length > 0) {
