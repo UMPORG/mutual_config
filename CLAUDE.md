@@ -21,7 +21,7 @@ Usage per tool: [README.md](README.md).
   `extends` is a relative path and `ignorePatterns` is not inherited; tsconfig `paths`/`include`/
   `exclude`/`outDir`/`rootDir` stay in the app; no `baseUrl`.
 - The Cérebro does not consume this package (it keeps copies in its own `config/`).
-- Pre-commit hook (`.githooks`, enabled by `pnpm install` via `prepare`) runs secretlint on staged files; CI runs gitleaks in warning mode.
+- Pre-commit hook (`.githooks`; enable once with `pnpm run hooks`, never via `prepare`: pnpm refuses git dependencies that have lifecycle scripts) runs secretlint on staged files; CI runs gitleaks in warning mode.
 - Check: `node scripts/validar.mjs` (CI also runs `tsc` on `testes/*`, oxlint, oxfmt and
   `renovate-config-validator --strict`).
 - Git: `main` only, no force-push, no skipped hooks; commits in Portuguese ending with
