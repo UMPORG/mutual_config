@@ -69,11 +69,12 @@ correr o `vp`. `VP_GIT_HOOKS=0` é respeitado pelo nosso script (primeira linha)
 
 `.githooks/pre-commit`: lista de ficheiros → secretlint em segundo plano (`node_modules/.bin/secretlint`,
 não `pnpm exec`: poupa ~1 s) e `node_modules/.bin/vp staged` em primeiro plano; espera pelos dois.
-Bloco `staged` com **duas chaves** (`vp lint` e `vp fmt`) para correrem em paralelo; `vp check --fix`
-numa só chave demorou 6 s por ser sequencial. Em CI o `prepare` não ativa o hook; em Docker não há `.git`.
+Bloco `staged`: o código passa por `["vp fmt", "<comando do lint>"]` **em sequência** numa só chave, e
+JSON/CSS/YAML só por `vp fmt`. Em chaves separadas o lint lia o ficheiro enquanto o fmt o reescrevia
+(`no-empty-file` intermitente, visto no Cartão). Em CI o `prepare` não ativa o hook; em Docker não há `.git`.
 
-Medido na máquina Windows do piloto (um `node -e 0` custa 1,2 s): commit de 1 ficheiro 4,3 s a quente
-(13 s a frio), 8 s com a versão sequencial. Em Linux/CI é bastante menor.
+Na máquina Windows do piloto um `node -e 0` custa 1,2 s: o commit de 1 ficheiro demora 6 a 8 s (mais com a
+máquina carregada). Em Linux/CI é bastante menor.
 
 ## CI
 
