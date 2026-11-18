@@ -1,7 +1,7 @@
 # mutual_config (`@umporg/config`)
 
-Shared presets (Renovate, tsconfig, oxlint, oxfmt, knip), target versions (`versoes.json`) and
-`.nvmrc`. The published package is JSON plus `vite/index.js` (+ `.d.ts`; plain JS, no TS: Node won't strip types in `node_modules`) — `@umporg/config/vite` exports `lintBase/lintNext/lintBun/fmtBase/fmtNext/fmtBun` and `defineUmpConfig` for the Vite+ `lint`/`fmt` blocks. `validar.mjs` fails if they diverge from `oxlint/*.json`/`oxfmt/*.json` (expand phase; the JSON goes in a later contract release). `scripts/` and `testes/` serve this repo's CI.
+`vite/index.js` (+ `.d.ts`) stays plain JS: Node won't strip types in `node_modules`. During the expand phase it must
+equal the merge of `oxlint/*.json`/`oxfmt/*.json` (`validar.mjs` fails otherwise); the JSON goes in a later contract release.
 Usage per tool: [README.md](README.md).
 
 - Consumed as a **git dependency pinned to a tag** (`github:UMPORG/mutual_config#vX.Y.Z`; Renovate
@@ -11,9 +11,8 @@ Usage per tool: [README.md](README.md).
   Never move or delete a published tag.
 - A target-version change touches `versoes.json`, `.nvmrc` (Node), the Renovate preset
   (`@types/node` `allowedVersions`) and the tool versions pinned in `.github/workflows/ci.yml`;
-  `validar.mjs` checks `versoes.json` against `.nvmrc`/`package.json` (version, packageManager,
-  `@types/node` major) and that `.oxfmtrc.json` equals `oxfmt/base.json` (change both together); it
-  does not check `ci.yml` or the Renovate preset. Docs point to `versoes.json` keys instead of
+  `validar.mjs` checks `versoes.json` against `.nvmrc`/`package.json` and that `.oxfmtrc.json` equals
+  `oxfmt/base.json` (change both together); it does not check `ci.yml` or the Renovate preset. Docs point to `versoes.json` keys instead of
   copying numbers.
 - A preset change changes lint/format/type errors in every app: say so in the commit and expect the
   apps to need a follow-up.

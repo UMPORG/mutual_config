@@ -62,7 +62,7 @@ O que o preset faz:
   `chore(deps): manutenção do lockfile`).
 - **Grupos:** Next.js e React (`next`, `react`, `react-dom`, `@types/react*`,
   `babel-plugin-react-compiler`); Better Auth (`better-auth`, `@better-auth/*`); Effect (`effect`,
-  `@effect/*`); Drizzle; XState; Vitest; oxc (`oxlint`, `oxfmt`); `@types/*`; Tailwind CSS;
+  `@effect/*`); Drizzle; XState; Vite+ (`vite-plus`, `@voidzero-dev/*`); Vitest; oxc (`oxlint`, `oxfmt`); `@types/*`; Tailwind CSS;
   Playwright; Node.js; Bun.
 - **Automerge** só de _patches_ e de _minor_ em `devDependencies`, e só com a CI verde
   (o Renovate nunca faz merge com checks a falhar).
@@ -139,7 +139,7 @@ Regras:
 - **Sem `baseUrl`** (deprecado no TypeScript 6; `paths` funciona sem ele).
 - `types` é explícito porque no TypeScript 6 o valor por omissão é `[]`. Uma app que use
   globais do Vitest junta-os: `"types": ["node", "vitest/globals"]`.
-- Versão-alvo do TypeScript: a de `versoes.json` (a nota explica porque o major seguinte espera).
+- Versão-alvo do TypeScript: a de `versoes.json`.
 
 `exactOptionalPropertyTypes` fica fora da base (em `estrito.json`) porque ligá-lo nas apps Next custa
 dezenas a centenas de erros; é recomendado onde já está perto de zero.
@@ -196,8 +196,6 @@ cp node_modules/@umporg/config/oxfmt/next.json .oxfmtrc.json   # apps Next
 cp node_modules/@umporg/config/oxfmt/base.json .oxfmtrc.json   # Cérebro
 ```
 
-- Opções comuns aos dois presets: `printWidth: 100`, 2 espaços, aspas duplas, `;`,
-  `trailingComma: all`, LF, newline final.
 - `oxfmt/next.json` liga **`sortTailwindcss`** (o mesmo algoritmo do `prettier-plugin-tailwindcss`)
   com `stylesheet: ./app/globals.css` e as funções `cn`/`cva`. A primeira execução reordena classes:
   fazer um commit só de formatação.
@@ -262,7 +260,7 @@ Mudar uma versão-alvo por decisão: ver [CLAUDE.md](CLAUDE.md).
 
 - `node scripts/validar.mjs` — JSON válido, `extends` locais existentes, coerência entre
   `versoes.json`, `.nvmrc` e `package.json`.
-- A CI (`.github/workflows/ci.yml`) corre ainda: `tsc` sobre `testes/next` e `testes/bun`
+- A CI (`.github/workflows/ci.yml`) corre ainda: `tsc` sobre `testes/next`, `testes/bun` e `testes/vite`
   (os presets compilam), oxlint com o preset `next`, oxfmt com o preset `base` e o
   `renovate-config-validator --strict`.
 - Nova versão (tag): procedimento em [CLAUDE.md](CLAUDE.md).

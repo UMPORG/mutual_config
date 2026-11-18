@@ -101,7 +101,7 @@ semana de diagnósticos iguais.
 - **`pnpm install --ignore-workspace` ignora o `pnpm-workspace.yaml`**: perde `allowBuilds`
   (`ERR_PNPM_IGNORED_BUILDS` por `esbuild`, que o Vite+ traz) e `minimumReleaseAgeExclude`
   (`ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` para next 16.4.1, react 19.3.1, vite-plus). Usar
-  `pnpm install` simples. O `CLAUDE.md` do workspace manda usar `--ignore-workspace`: rever.
+  `pnpm install` simples.
 - `vp lint` imprime uma nota (`you are running vp lint as a built-in command`) no stderr; ao usar
   `--format json` ou `--print-config` redirecionar `2>/dev/null`.
 - Não correr `git stash` com o `node_modules` do ramo novo: o `pnpm <script>` reinstala as dependências
@@ -115,7 +115,7 @@ semana de diagnósticos iguais.
 
 ## Não migrado
 
-- `tsc --noEmit`: fica (item 10 do plano).
+- `tsc --noEmit`: fica.
 - `vp build`/`vp dev`/`vp run`/`vp pack`: o Next constrói; sem cache do Vite Task.
 - `setup-vp` no CI: só quando um job chamar `vp` diretamente.
 - Despachante `vp config`/`.vite-hooks`: ver «Hooks: decisão».
